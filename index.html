@@ -45,6 +45,28 @@ th {
     font-size: 14px;
     color: #444;
 }
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on mobile */
+    background: #fff;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+}
+
+/* Improve mobile readability */
+table {
+    min-width: 1200px; /* forces horizontal scroll */
+}
+
+@media (max-width: 768px) {
+    th, td {
+        font-size: 13px;
+        padding: 6px;
+        white-space: nowrap;
+    }
+}
+
 </style>
 </head>
 
@@ -54,7 +76,7 @@ th {
 <h2>Diploma in Electronics & Telecommunication Engineering</h2>
 <h3>NEP 2020 Aligned Curriculum (2023)</h3>
 <h3>Semester V – Program Structure</h3>
-
+<div class="table-container">
 <table>
 <tr>
 <th rowspan="2">SN</th>
@@ -205,7 +227,7 @@ th {
 <th>1000</th>
 </tr>
 </table>
-
+</div>
 <div class="section">
 <h3>Discipline Specific Electives</h3>
 <ul>
@@ -235,3 +257,4 @@ Electronics & Telecommunication Engineering
 
 </body>
 </html>
+
