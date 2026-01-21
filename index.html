@@ -1,142 +1,256 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>NEP 2020 Curriculum – E&TC</title>
-<link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta charset="UTF-8" />
+  <title>NEP 2020 Curriculum – E&TC</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <!-- Make it responsive on mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<style>
-body {
-    font-family: "Segoe UI", Arial, sans-serif;
-    margin: 40px;
-    background: #f7f9fc;
-    color: #222;
-}
+  <style>
+    /* ===== CSS RESET (minimal) ===== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html:focus-within { scroll-behavior: smooth; }
+    body, h1, h2, p { margin: 0; }
+    img { max-width: 100%; display: block; }
 
-h1, h2 {
-    text-align: center;
-    margin: 8px 0;
-}
+    /* ===== THEME TOKENS ===== */
+    :root {
+      --bg: #f7f9fc;
+      --card-bg: #f9fbff;
+      --text: #222;
+      --muted: #555;
+      --border: #d0d7e5;
+      --brand1: #0b5394;
+      --brand2: #1c78c0;
+      --shadow-sm: 0 4px 10px rgba(0,0,0,0.08);
+      --shadow-lg: 0 6px 14px rgba(0,0,0,0.12);
 
-h1 {
-    font-size: 34px;
-    font-weight: 700;
-    background-image: linear-gradient(90deg, #0b5394, #1c78c0);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+      /* Fluid type scales for better legibility across devices */
+      --h1-size: clamp(1.6rem, 2.5vw + 1rem, 2.2rem);
+      --h2-size: clamp(1.1rem, 1.2vw + 0.8rem, 1.4rem);
+      --body-size: clamp(0.95rem, 0.6vw + 0.7rem, 1.05rem);
 
-h2 {
-    font-size: 22px;
-    font-weight: 600;
-    color: #0b5394;
-}
+      /* Spacing */
+      --page-pad: clamp(16px, 3vw, 40px);
+      --container-pad: clamp(16px, 2.6vw, 30px);
+      --grid-gap: clamp(14px, 2.2vw, 20px);
+      --card-pad: clamp(16px, 2.2vw, 20px);
+      --radius: 10px;
+    }
 
-.container {
-    max-width: 900px;
-    margin: 40px auto;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
+    /* Optional dark mode support if the OS prefers it */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1320;
+        --card-bg: #12172a;
+        --text: #e7ecf5;
+        --muted: #b7c0d0;
+        --border: #2a3350;
+        --shadow-sm: 0 4px 10px rgba(0,0,0,0.4);
+        --shadow-lg: 0 6px 14px rgba(0,0,0,0.5);
+      }
+    }
 
-.semester-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-}
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: var(--body-size);
+      line-height: 1.55;
+      margin: 0;
+      padding: var(--page-pad);
+      background: var(--bg);
+      color: var(--text);
+    }
 
-.sem-card {
-    border: 1px solid #d0d7e5;
-    border-radius: 6px;
-    padding: 20px;
-    text-align: center;
-    background: #f9fbff;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+    /* Skip link for keyboard users */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: -999px;
+      background: #fff;
+      color: #000;
+      padding: 8px 12px;
+      border-radius: 6px;
+      box-shadow: var(--shadow-sm);
+    }
+    .skip-link:focus {
+      left: 12px;
+      top: 12px;
+      z-index: 1000;
+    }
 
-.sem-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-}
+    header {
+      text-align: center;
+      margin-bottom: 14px;
+    }
 
-.sem-card a {
-    text-decoration: none;
-    color: #0b5394;
-    font-size: 18px;
-    font-weight: 600;
-}
+    h1, h2 {
+      margin: 8px 0;
+      text-wrap: balance; /* nicer headlines on narrow screens */
+    }
 
-.sem-card span {
-    display: block;
-    margin-top: 6px;
-    font-size: 14px;
-    color: #555;
-}
+    h1 {
+      font-size: var(--h1-size);
+      font-weight: 700;
+      background-image: linear-gradient(90deg, var(--brand1), var(--brand2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-.footer {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 14px;
-    color: #444;
-}
-</style>
+    .subtitle {
+      font-size: var(--h2-size);
+      font-weight: 600;
+      color: var(--brand1);
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 24px auto 0;
+      background: #ffffff;
+      color: #222;
+      padding: var(--container-pad);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+    /* Dark mode adjustment for container block */
+    @media (prefers-color-scheme: dark) {
+      .container {
+        background: #151a2d;
+        color: var(--text);
+      }
+    }
+
+    .section-title {
+      font-size: var(--h2-size);
+      font-weight: 600;
+      color: var(--brand1);
+      text-align: center;
+    }
+
+    /* Responsive Grid */
+    .semester-grid {
+      display: grid;
+      gap: var(--grid-gap);
+      margin-top: 24px;
+      /* Auto-fit makes it fluid; min 220px ensures good tap size */
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .sem-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: var(--card-pad);
+      text-align: center;
+      background: var(--card-bg);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      will-change: transform;
+    }
+
+    /* Larger tap target by making the link fill the card */
+    .sem-card a {
+      display: block;
+      text-decoration: none;
+      color: var(--brand1);
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: 10px 8px;
+      border-radius: 6px;
+      outline: none;
+    }
+    .sem-card span {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .sem-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      border-color: color-mix(in oklab, var(--brand2) 40%, var(--border));
+    }
+    .sem-card a:focus-visible {
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand2) 35%, white);
+      background: color-mix(in oklab, var(--brand2) 12%, var(--card-bg));
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.95rem;
+      color: #444;
+    }
+    @media (prefers-color-scheme: dark) {
+      .footer { color: var(--muted); }
+    }
+
+    /* Small screen tweaks */
+    @media (max-width: 420px) {
+      header { margin-bottom: 8px; }
+      .container { padding: 14px; }
+      .sem-card { padding: 14px; }
+      .sem-card a { font-size: 1rem; }
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
 </head>
 
 <body>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
-<h1>Government Polytechnic, Nagpur</h1>
-<h2>Diploma in Electronics & Telecommunication Engineering</h2>
+  <header>
+    <h1>Government Polytechnic, Nagpur</h1>
+    <p class="subtitle">Diploma in Electronics &amp; Telecommunication Engineering</p>
+  </header>
 
-<div class="container">
-<h2>NEP 2020 Aligned Curriculum (2023)</h2>
+  <main id="main" class="container" role="main">
+    <h2 class="section-title">NEP 2020 Aligned Curriculum (2023)</h2>
 
-<div class="semester-grid">
+    <section class="semester-grid" aria-label="Semester navigation">
+      <article class="sem-card">
+        <a href="semester1.html">Semester I</a>
+        <span>Program Structure</span>
+      </article>
 
-<div class="sem-card">
-<a href="semester1.html">Semester I</a>
-<span>Program Structure</span>
-</div>
+      <article class="sem-card">
+        <a href="semester2.html">Semester II</a>
+        <span>Program Structure</span>
+      </article>
 
-<div class="sem-card">
-<a href="semester2.html">Semester II</a>
-<span>Program Structure</span>
-</div>
+      <article class="sem-card">
+        <a href="semester3.html">Semester III</a>
+        <span>Program Structure</span>
+      </article>
 
-<div class="sem-card">
-<a href="semester3.html">Semester III</a>
-<span>Program Structure</span>
-</div>
+      <article class="sem-card">
+        <a href="semester4.html">Semester IV</a>
+        <span>Program Structure</span>
+      </article>
 
-<div class="sem-card">
-<a href="semester4.html">Semester IV</a>
-<span>Program Structure</span>
-</div>
+      <article class="sem-card">
+        <a href="semester5.html">Semester V</a>
+        <span>Program Structure</span>
+      </article>
 
-<div class="sem-card">
-<a href="semester5.html">Semester V</a>
-<span>Program Structure</span>
-</div>
+      <article class="sem-card">
+        <a href="semester6.html">Semester VI</a>
+        <span>Program Structure</span>
+      </article>
+    </section>
+  </main>
 
-<div class="sem-card">
-<a href="semester6.html">Semester VI</a>
-<span>Program Structure</span>
-</div>
-
-</div>
-</div>
-
-<div class="footer">
-<p>
-Department of Electronics & Telecommunication Engineering<br>
-NEP 2020 Curriculum
-</p>
-</div>
-
+  <footer class="footer" role="contentinfo">
+    <p>
+      Department of Electronics &amp; Telecommunication Engineering<br>
+      NEP 2020 Curriculum
+    </p>
+  </footer>
 </body>
 </html>
-
-
